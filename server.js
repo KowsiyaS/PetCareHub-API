@@ -3,7 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import multer from "multer";
 import path from "path";
-
+import authRoutes from "./routes/auth.js";
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -13,6 +13,8 @@ app.use(cors());
 app.get("/", (_req, res) => {
     res.send("Welcome to the PetCare Hub API");
 });
+
+app.use("/login", authRoutes);
 
 app.post("/api/upload", (req, res) => {
     res.send("upload successfully");
