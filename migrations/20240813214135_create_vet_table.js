@@ -3,17 +3,11 @@
  * @returns { Promise<void> }
  */
 export function up(knex) {
-    return knex.schema.createTable("medical_record", (table) => {
+    return knex.schema.createTable("vet", (table) => {
         table.increments("id").primary();
-        table
-            .integer("pet_id")
-            .unsigned()
-            .references("pet.id")
-            .onUpdate("CASCADE")
-            .onDelete("CASCADE");
+        table.string("place_id").notNullable();
         table.string("name").notNullable();
-        table.string("description").notNullable();
-        table.string("url").notNullable();
+        table.string("address").notNullable();
         table.timestamp("created_at").defaultTo(knex.fn.now());
         table
             .timestamp("updated_at")
@@ -28,5 +22,5 @@ export function up(knex) {
  * @returns { Promise<void> }
  */
 export function down(knex) {
-    return knex.schema.dropTable("medical_record");
+    return knex.schema.dropTable("vet");
 }

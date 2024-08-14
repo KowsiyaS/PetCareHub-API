@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 export function up(knex) {
-    return knex.schema.createTable("inventories", (table) => {
+    return knex.schema.createTable("pet", (table) => {
         table.increments("id").primary();
         table
             .integer("user_id")
@@ -28,5 +28,5 @@ export function up(knex) {
  * @returns { Promise<void> }
  */
 export function down(knex) {
-    return knex.schema.dropTable("inventories");
+    return knex.schema.dropTable("pet");
 }
