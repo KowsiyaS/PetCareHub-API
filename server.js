@@ -6,6 +6,7 @@ import path from "path";
 import authRoutes from "./routes/auth.js";
 import petRoutes from "./routes/pet.js";
 import appointmentRoutes from "./routes/appointment.js";
+import vetRoutes from "./routes/vet.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -20,6 +21,7 @@ app.get("/", (_req, res) => {
 app.use("/login", authRoutes);
 app.use("/pet", petRoutes);
 app.use("/appointment", appointmentRoutes);
+app.use("/vets", vetRoutes);
 
 app.post("/api/upload", (req, res) => {
     res.send("upload successfully");
