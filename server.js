@@ -4,6 +4,9 @@ import cors from "cors";
 import multer from "multer";
 import path from "path";
 import authRoutes from "./routes/auth.js";
+import petRoutes from "./routes/pet.js";
+import appointmentRoutes from "./routes/appointment.js";
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -15,6 +18,8 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/login", authRoutes);
+app.use("/pet", petRoutes);
+app.use("/appointment", appointmentRoutes);
 
 app.post("/api/upload", (req, res) => {
     res.send("upload successfully");
