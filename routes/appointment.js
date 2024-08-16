@@ -4,7 +4,8 @@ import * as appointmentController from "../controllers/appointment-controller.js
 const router = express.Router();
 
 router
-    .get("/", appointmentController.getAppointments)
+    .route("/")
+    .get(appointmentController.getAppointments)
     .post(appointmentController.addAppointment);
 router.get("/timeslots", appointmentController.availableTimeslots);
 

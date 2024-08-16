@@ -22,26 +22,26 @@ const getAppointments = async (req, res) => {
 
 const addAppointment = async (req, res) => {
     if (
-        !req.body.name ||
-        !req.body.birth_date ||
-        !req.body.species ||
-        !req.body.user_id
+        !req.body.pet_id ||
+        !req.body.vet_id ||
+        !req.body.date ||
+        !req.body.time
     ) {
         return res.status(400).json({
             message:
-                "Please provide name, birth_date and species to add a pet.",
+                "Please provide pet ID,vet ID, date and time to add an appointment.",
         });
     }
 
     try {
-        const result = await knex("pet").insert(req.body);
+        const result = await knex("appointment").insert(req.body);
 
-        const newPetId = result[0];
-        const createdPet = await knex("pet").where({
-            id: newPetId,
+        const newAppointmentId = result[0];
+        const createdAppointment = await knex("appointment").where({
+            id: newAppointmentId,
         });
 
-        res.status(201).json(createdPet);
+        res.status(201).json(createdAppointment);
     } catch (error) {
         res.status(500).json({
             message: `Unable to create new pet: ${error}`,
@@ -50,13 +50,15 @@ const addAppointment = async (req, res) => {
 };
 
 const availableTimeslots = async (req, res) => {
-    const { date, vet_id } = req.body;
-
+    const { date, vet_id } = req.query;
+    console.log(date, vet_id);
     try {
-        const appointments = await knex("Appointments")
+        const appointments = await knex("appointment")
             .select("time")
             .where("date", date)
             .andWhere("vet_id", vet_id);
+
+        const bookedTimes = appointments.map((appointment) => appointment.time);
 
         const timeSlots = [
             "10:00",
@@ -70,11 +72,12 @@ const availableTimeslots = async (req, res) => {
         ];
 
         const availableSlots = timeSlots.filter(
-            (slot) => !appointments.includes(slot)
+            (slot) => !bookedTimes.includes(slot)
         );
 
         res.status(200).json(availableSlots);
     } catch (error) {
+        console.error("Error fetching available timeslots:", error);
         res.status(500).send({ error: "Error fetching available timeslots" });
     }
 };
