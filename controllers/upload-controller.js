@@ -6,17 +6,17 @@ import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (_req, file, cb) => {
         cb(null, "uploads/");
     },
-    filename: (req, file, cb) => {
+    filename: (_req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
     },
 });
 
 const upload = multer({
     storage,
-    fileFilter: (req, file, cb) => {
+    fileFilter: (_req, file, cb) => {
         if (file.mimetype === "application/pdf") {
             cb(null, true);
         } else {

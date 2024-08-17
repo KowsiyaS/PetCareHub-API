@@ -4,7 +4,7 @@ import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 
 const getReminders = async (req, res) => {
-    const userId = 1;
+    const userId = req.user.id;
 
     try {
         const reminders = await knex("reminder")

@@ -4,8 +4,7 @@ import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 
 const getAppointments = async (req, res) => {
-    const userId = 1;
-
+    const userId = req.user.id;
     try {
         const appointments = await knex("appointment")
             .join("pet", "appointment.pet_id", "pet.id")

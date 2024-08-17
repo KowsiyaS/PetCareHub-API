@@ -4,7 +4,7 @@ import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 
 const getPets = async (req, res) => {
-    const userId = 1;
+    const userId = req.user.id;
 
     try {
         const pets = await knex("pet").select("*").where("user_id", userId);
@@ -22,7 +22,7 @@ const addPet = async (req, res) => {
         !req.body.name ||
         !req.body.birth_date ||
         !req.body.species ||
-        !req.body.user_id
+        !req.user.id
     ) {
         return res.status(400).json({
             message:
@@ -30,8 +30,13 @@ const addPet = async (req, res) => {
         });
     }
 
+    const newPet = {
+        ...req.body,
+        user_id: req.user.id,
+    };
+
     try {
-        const result = await knex("pet").insert(req.body);
+        const result = await knex("pet").insert(newPet);
 
         const newPetId = result[0];
         const createdPet = await knex("pet").where({
