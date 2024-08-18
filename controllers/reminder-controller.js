@@ -42,4 +42,49 @@ const addReminder = async (req, res) => {
     }
 };
 
-export { getReminders, addReminder };
+const updateReminder = async (req, res) => {
+    const { id } = req.params;
+
+    if (!req.body.name || !req.body.date || !req.body.pet_id) {
+        return res.status(400).json({
+            message: "Please provide name, date and pet ID to add a reminder.",
+        });
+    }
+    try {
+        await knex("reminder").where({ id }).update(req.body);
+
+        const updatedReminder = await knex("reminder").where({ id }).first();
+
+        res.status(201).json(updateReminder);
+    } catch (error) {
+        res.status(500).json({
+            message: `Unable to create new reminder: ${error}`,
+        });
+    }
+};
+
+const deleteReminder = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const reminder = await knex("reminder").where({ id }).first();
+
+        if (!reminder) {
+            return res.status(404).json({
+                message: "Reminder not found.",
+            });
+        }
+
+        await knex("reminder").where({ id }).del();
+
+        res.status(200).json({
+            message: "Reminder successfully deleted.",
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: `Unable to delete reminder: ${error.message}`,
+        });
+    }
+};
+
+export { getReminders, addReminder, updateReminder, deleteReminder };

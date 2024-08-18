@@ -15,4 +15,17 @@ const getVets = async (_req, res) => {
     }
 };
 
-export { getVets };
+const getOneVet = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const vets = await knex("vet").where({ id }).select("*").first();
+
+        res.status(200).json(vets);
+    } catch (error) {
+        res.status(500).json({
+            message: `Unable to retrieve vet with ${id}`,
+        });
+    }
+};
+
+export { getVets, getOneVet };

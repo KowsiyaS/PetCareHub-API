@@ -8,4 +8,9 @@ router
     .get(reminderController.getReminders)
     .post(reminderController.addReminder);
 
+router
+    .route("/:id")
+    .put(reminderController.updateReminder)
+    .delete(reminderController.deleteReminder);
+
 export default router;

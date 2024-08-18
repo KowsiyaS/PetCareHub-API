@@ -14,13 +14,13 @@ const login = async (req, res) => {
     }
 
     const user = await knex("user").select("*").where("email", email).first();
-    console.log(user);
+
     if (!user) {
         return res.status(400).send("No user or wrong password");
     }
 
     const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-    console.log();
+
     if (!isPasswordCorrect) {
         return res.status(400).send("No user or wrong password");
     }
