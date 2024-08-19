@@ -104,7 +104,7 @@ const deleteAppointment = async (req, res) => {
 
 const availableTimeslots = async (req, res) => {
     const { date, vet_id } = req.query;
-    console.log(date, vet_id);
+
     try {
         const appointments = await knex("appointment")
             .select("time")

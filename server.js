@@ -11,6 +11,8 @@ import appointmentRoutes from "./routes/appointment.js";
 import vetRoutes from "./routes/vet.js";
 import reminderRoutes from "./routes/reminder.js";
 import uploadRoutes from "./routes/upload.js";
+import profileRoutes from "./routes/profile.js";
+import geminiRoutes from "./routes/gemini.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -41,6 +43,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/user", authRoutes);
+app.use("/profile", authenticateJWT, profileRoutes);
 app.use("/pet", authenticateJWT, petRoutes);
 app.use("/appointment", authenticateJWT, appointmentRoutes);
 app.use("/vets", authenticateJWT, vetRoutes);
@@ -48,6 +51,8 @@ app.use("/reminder", authenticateJWT, reminderRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/medical-record", authenticateJWT, uploadRoutes);
+
+app.use("/chat", authenticateJWT, geminiRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);

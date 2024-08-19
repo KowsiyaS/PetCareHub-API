@@ -32,7 +32,7 @@ const uploadFile = async (req, res) => {
         }
 
         const { name, description, pet_id } = req.body;
-        console.log(req.body);
+
         const fileUrl = `http://localhost:8080/uploads/${req.file.filename}`;
 
         try {
@@ -48,6 +48,24 @@ const uploadFile = async (req, res) => {
             res.status(500).send("Unable to add record.");
         }
     });
+};
+
+const getAllPetRecords = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const records = await knex("medical_record")
+            .where("pet_id", id)
+            .select("*");
+
+        if (records) {
+            res.status(200).json(records);
+        } else {
+            res.status(404).send("medical records not found");
+        }
+    } catch (error) {
+        res.status(500).send("Unable to retrieve file.");
+    }
 };
 
 const getRecordById = async (req, res) => {
@@ -68,4 +86,4 @@ const getRecordById = async (req, res) => {
     }
 };
 
-export { getRecordById, uploadFile };
+export { getRecordById, uploadFile, getAllPetRecords };
