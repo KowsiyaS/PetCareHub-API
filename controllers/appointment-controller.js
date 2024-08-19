@@ -48,6 +48,36 @@ const addAppointment = async (req, res) => {
     }
 };
 
+const updateAppointment = async (req, res) => {
+    const { id } = req.params;
+
+    if (
+        !req.body.pet_id ||
+        !req.body.vet_id ||
+        !req.body.date ||
+        !req.body.time
+    ) {
+        return res.status(400).json({
+            message:
+                "Please provide pet ID,vet ID, date and time to add an appointment.",
+        });
+    }
+
+    try {
+        await knex("appointment").where({ id }).update(req.body);
+
+        const updatedAppointment = await knex("appointment")
+            .where({ id })
+            .first();
+
+        res.status(201).json(updatedAppointment);
+    } catch (error) {
+        res.status(500).json({
+            message: `Unable to create new pet: ${error}`,
+        });
+    }
+};
+
 const availableTimeslots = async (req, res) => {
     const { date, vet_id } = req.query;
     console.log(date, vet_id);
@@ -81,4 +111,9 @@ const availableTimeslots = async (req, res) => {
     }
 };
 
-export { getAppointments, addAppointment, availableTimeslots };
+export {
+    getAppointments,
+    addAppointment,
+    availableTimeslots,
+    updateAppointment,
+};

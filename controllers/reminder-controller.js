@@ -55,7 +55,7 @@ const updateReminder = async (req, res) => {
 
         const updatedReminder = await knex("reminder").where({ id }).first();
 
-        res.status(201).json(updateReminder);
+        res.status(201).json(updatedReminder);
     } catch (error) {
         res.status(500).json({
             message: `Unable to create new reminder: ${error}`,
