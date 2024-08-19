@@ -78,6 +78,30 @@ const updateAppointment = async (req, res) => {
     }
 };
 
+const deleteAppointment = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const reminder = await knex("appointment").where({ id }).first();
+
+        if (!reminder) {
+            return res.status(404).json({
+                message: "Appointment not found.",
+            });
+        }
+
+        await knex("appointment").where({ id }).del();
+
+        res.status(200).json({
+            message: "Appointment successfully deleted.",
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: `Unable to delete appointment: ${error.message}`,
+        });
+    }
+};
+
 const availableTimeslots = async (req, res) => {
     const { date, vet_id } = req.query;
     console.log(date, vet_id);
@@ -116,4 +140,5 @@ export {
     addAppointment,
     availableTimeslots,
     updateAppointment,
+    deleteAppointment,
 };

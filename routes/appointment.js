@@ -10,5 +10,8 @@ router
 
 router.get("/timeslots", appointmentController.availableTimeslots);
 
-router.put("/:id", appointmentController.updateAppointment);
+router
+    .route("/:id")
+    .put(appointmentController.updateAppointment)
+    .delete(appointmentController.deleteAppointment);
 export default router;
